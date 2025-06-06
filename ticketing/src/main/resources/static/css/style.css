@@ -1,0 +1,144 @@
+/* style.css : base universelle pour tout projet web */
+
+/* Reset de base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Style global */
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    color: #212529;
+    line-height: 1.6;
+    padding: 20px;
+  }
+  
+  /* Titres */
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #222;
+  }
+  
+  h1 {
+    font-size: 2rem;
+  }
+  
+  h2 {
+    font-size: 1.75rem;
+  }
+  
+  h3 {
+    font-size: 1.5rem;
+  }
+  
+  /* Paragraphes & texte */
+  p {
+    margin-bottom: 15px;
+  }
+  
+  /* Liens */
+  a {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Tableaux */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    background-color: white;
+  }
+  
+  table, th, td {
+    border: 1px solid #dee2e6;
+    padding: 10px;
+    text-align: left;
+  }
+  
+  th {
+    background-color: #0d6efd;
+    color: white;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  /* Formulaires */
+  form {
+    background: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.05);
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  input, select, textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+  }
+  
+  /* Boutons */
+  button, input[type="submit"] {
+    background-color: #0d6efd;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  button:hover, input[type="submit"]:hover {
+    background-color: #0a58ca;
+  }
+  
+  /* Conteneur utile */
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  /* Messages (alertes génériques) */
+  .alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    font-weight: bold;
+  }
+  
+  .alert-success {
+    background-color: #d1e7dd;
+    color: #0f5132;
+  }
+  
+  .alert-danger {
+    background-color: #f8d7da;
+    color: #842029;
+  }
+  
+  .alert-warning {
+    background-color: #fff3cd;
+    color: #664d03;
+  }
+  

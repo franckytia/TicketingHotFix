@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Résultat de la Transaction</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .container { max-width: 600px; margin: auto; text-align: center; }
+        .success { background-color: #d4edda; padding: 20px; border-radius: 5px; color: #155724; }
+        .error { background-color: #f8d7da; padding: 20px; border-radius: 5px; color: #721c24; }
+        .btn { display: inline-block; margin-top: 15px; padding: 10px 15px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px; }
+        .btn:hover { background-color: #0056b3; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Message de succès -->
+        <div th:if="${status == 'success'}" class="success">
+            <h1>Transaction Réussie !</h1>
+            <p th:text="${message}">Votre transaction a été réalisée avec succès.</p>
+            <a th:href="@{/}" class="btn">Retour à l'accueil</a>
+        </div>
+        
+        <!-- Message d'erreur -->
+        <div th:if="${status == 'error'}" class="error">
+            <h1>Erreur lors de la transaction</h1>
+            <p th:text="${message}">Une erreur est survenue pendant la transaction.</p>
+            <a th:href="@{/retry}" class="btn">Réessayer</a>
+        </div>
+        
+        <!-- Si aucun statut n'est défini, on peut afficher un message par défaut ou rediriger -->
+        <div th:if="${status == null}">
+            <h1>Statut inconnu</h1>
+            <p>Aucune information sur le résultat de la transaction n'est disponible.</p>
+            <a th:href="@{/}" class="btn">Retour à l'accueil</a>
+            <a th:href="@{/reservations/{id}}" class="btn">Retour à l'accueil</a>
+        </div>
+
+
+        
+    </div>
+</body>
+</html>

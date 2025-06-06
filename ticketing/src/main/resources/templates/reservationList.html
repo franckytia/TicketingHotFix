@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Liste des Réservations</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+  <h2>Liste des Réservations</h2>
+  <table border="1" cellspacing="0" cellpadding="5">
+    <thead>
+      <tr>
+         <th>ID</th>
+         <th>ID Vol</th>
+         <th>Au nom de</th>
+         <th>CIN</th>
+         <th>Date de réservation</th>
+         <th>Statut</th>
+         <th>Prix Total</th>
+         <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="reservation : ${reservations}">
+          <td th:text="${reservation.id}"></td>
+          <td th:text="${reservation.idVol}"></td>
+          <td th:text="${reservation.auNom}"></td>
+          <td th:text="${reservation.cin}"></td>
+          <td th:text="${#dates.format(reservation.dateReservation, 'yyyy-MM-dd HH:mm')}"></td>
+          <td th:text="${reservation.statut}"></td>
+          <td th:text="${reservation.prixTotal}"></td>
+          <td>
+              <!-- Bouton ou lien permettant d'aller vers l'ajout de détails -->
+              <a th:href="@{'/reservation/ajout/detail/' + ${reservation.id}}">Ajouter détails</a>
+              <a th:href="@{'/reservations/' + ${reservation.id}}">Voir détails</a>
+          </td>
+      </tr>
+    </tbody>
+  </table>
+</body>
+</html>

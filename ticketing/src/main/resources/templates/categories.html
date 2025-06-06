@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Catégories d'Âge</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <h2>Liste des catégories d'âge</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Description</th>
+                <th>Âge Min</th>
+                <th>Âge Max</th>
+                <th>Coefficient du Billet</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="categorie : ${categories}">
+                <td th:text="${categorie.description}"></td>
+                <td th:text="${categorie.ageMin}"></td>
+                <td th:text="${categorie.ageMax}"></td>
+                <td th:text="${categorie.coefficient}"></td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+    <a href="/categorie/nouveau">Ajouter une nouvelle catégorie</a>
+</body>
+</html>

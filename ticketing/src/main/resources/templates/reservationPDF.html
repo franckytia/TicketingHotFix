@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <title>Détails de la Réservation</title>
+</head>
+<body>
+  <h1>Détails de la Réservation</h1>
+
+  <!-- Informations principales de la réservation -->
+  <div class="info">
+    <h2>Informations Générales</h2>
+    <ul>
+      <li><strong>ID :</strong> <span th:text="${reservation.id}"></span></li>
+      <li><strong>ID Vol :</strong> <span th:text="${reservation.idVol}"></span></li>
+      <li><strong>Au Nom de :</strong> <span th:text="${reservation.auNom}"></span></li>
+      <li><strong>CIN :</strong> <span th:text="${reservation.cin}"></span></li>
+      <li><strong>Date de Réservation :</strong>
+          <span th:text="${#dates.format(reservation.dateReservation, 'yyyy-MM-dd HH:mm')}"></span>
+      </li>
+      <li><strong>Statut :</strong> <span th:text="${reservation.statut}"></span></li>
+      <li><strong>Prix Total :</strong> <span th:text="${reservation.prixTotal}"></span></li>
+    </ul>
+  </div>
+
+  <!-- Détails de réservation provenant de la table reservation_detail -->
+  <h2>Détails de Réservation</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>ID Type de Siège</th>
+        <th>Nom du Passager</th>
+        <th>Passport</th>
+        <th>Remarque</th>
+        <th>Taille</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="detail : ${reservationDetails}">
+        <td th:text="${detail.id}"></td>
+        <td th:text="${detail.idTypeSiege}"></td>
+        <td th:text="${detail.nomPassager}"></td>
+        <td th:text="${detail.passport}"></td>
+        <td th:text="${detail.remarque}"></td>
+        <td th:text="${detail.taille}"></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Informations sur les personnes associées à la réservation provenant de la table reservation_personne -->
+  <h2>Informations Personnes (Réservation Personne)</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>ID Catégorie Personne</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="rp : ${reservationPersonnes}">
+        <td th:text="${rp.id}"></td>
+        <td th:text="${rp.idCategoriePersonne}"></td>
+        <td th:text="${rp.total}"></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Bouton pour revenir à la liste des réservations -->
+  
+</body>
+</html>

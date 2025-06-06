@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Modifier le prix du billet</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <h2>Modifier le prix du billet</h2>
+    <form th:action="@{/categorie/edit}" method="get">
+        <label>Choisissez la catégorie :</label>
+        <select name="id">
+            <option th:each="categorie : ${categories}" 
+                    th:value="${categorie.id}" 
+                    th:text="${categorie.description} + ' (' + ${categorie.ageMin} + '-' + ${categorie.ageMax} + ')'">
+            </option>
+        </select>
+        <button type="submit">Modifier</button>
+    </form>
+    <br>
+    <a href="/categories">Retour à la liste des catégories</a>
+</body>
+</html>
