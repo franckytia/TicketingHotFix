@@ -17,16 +17,16 @@
 <div class="container mt-5">
     <div class="card shadow">
         <div class="card-body">
-            <h2 class="text-center mb-4">Liste des réservations</h2>
+            <h2 class="text-center mb-4">Tableau des enregistrements</h2>
             <table class="table table-striped table-hover">
                 <thead class="table-dark">
                     <tr>
                         <th>ID</th>
                         <th>ID Vol</th>
-                        <th>ID Utilisateur</th>
-                        <th>Type de siège</th>
-                        <th>Date de réservation</th>
-                        <th>Prix final</th>
+                        <th>Nom</th>
+                        <th>CIN</th>
+                        <th>Date réservation</th>
+                        <th>Prix total</th>
                         <th>Statut</th>
                         <th>Actions</th>
                     </tr>
@@ -40,22 +40,20 @@
                     <tr>
                         <td><%= res.getId() %></td>
                         <td><%= res.getIdVol() %></td>
-                        <td><%= res.getIdUtilisateur() %></td>
-                        <td><%= res.getIdTypeSiege() %></td>
+                        <td><%= res.getAuNom() %></td>
+                        <td><%= res.getCIN() %></td>
                         <td><%= res.getDateReservation() %></td>
-                        <td><%= res.getPrixFinal() %></td>
+                        <td><%= res.getPrixTotal() %></td>
                         <td><%= res.getStatut() %></td>
                         <td>
-                            <div class="d-flex gap-2">
-                                <form action="viewReservationDetails" method="get">
-                                    <input type="hidden" name="id" value="<%= res.getId() %>">
-                                    <button type="submit" class="btn btn-info btn-sm">Détails</button>
-                                </form>
-                                <form action="cancelReservation" method="post">
-                                    <input type="hidden" name="id" value="<%= res.getId() %>">
-                                    <button type="submit" class="btn btn-danger btn-sm">Annuler</button>
-                                </form>
-                            </div>
+                            <form action="validateReservation" method="post" style="display:inline;">
+                                <input type="hidden" name="id" value="<%= res.getId() %>">
+                                <button type="submit" class="btn btn-success btn-sm">Valider</button>
+                            </form>
+                            <form action="rejectReservation" method="post" style="display:inline;">
+                                <input type="hidden" name="id" value="<%= res.getId() %>">
+                                <button type="submit" class="btn btn-danger btn-sm">Rejeter</button>
+                            </form>
                         </td>
                     </tr>
                     <% 

@@ -21,7 +21,7 @@
                     <a href="managePromotions" class="btn btn-link">Promotion par vol</a>
                 </li>
                 <li class="list-group-item">
-                    <a href="manageReservations.jsp" class="btn btn-link">Réservation</a>
+                    <a href="manageReservations" class="btn btn-link">Réservation</a>
                 </li>
             </ul>
             <div class="mt-3 text-center">
