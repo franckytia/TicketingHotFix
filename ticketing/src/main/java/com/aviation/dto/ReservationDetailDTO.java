@@ -24,4 +24,5 @@ public class ReservationDetailDTO {
     public void setIdTypeSiege(Integer idTypeSiege) { this.idTypeSiege = idTypeSiege; }
     public String getRemarque() { return remarque; }
     public void setRemarque(String remarque) { this.remarque = remarque; }
+ 
 }
