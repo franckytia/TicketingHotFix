@@ -10,7 +10,6 @@ import java.sql.Date;  // java.sql.Date
 import java.util.List;
 import mg.p16.java.dao.VolDAO;
 import mg.p16.java.dao.*;
-import mg.p16.java.model.Vol;
 import mg.p16.java.model.*;
 import java.text.ParseException;
 @AnnotationController
@@ -146,7 +145,7 @@ public class FlightController {
         return view;
     }
     @GET("/searchFlights")
-    public ModelView searchFlights() {
+       public ModelView searchFlights() {
         ModelView view = new ModelView("web/jsp/frontoffice/searchFlights.jsp");
         try {
            List<Ville> villes = villeDao.getAllVilles();
@@ -156,6 +155,8 @@ public class FlightController {
         }
         return view;
     }
+
+   
     @GET("/flightDetails")
     public ModelView flightDetails(@Param(name = "id") String idStr) {
         ModelView view = new ModelView("web/jsp/frontoffice/flightDetails.jsp");
