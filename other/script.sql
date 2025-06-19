@@ -83,3 +83,48 @@ CREATE TABLE reservation_detail (
     remarque VARCHAR(255),
     taille DOUBLE PRECISION
 );
+
+
+
+
+
+-----trigger
+CREATE OR REPLACE FUNCTION maj_prix_total_reservation()
+RETURNS TRIGGER AS $$
+DECLARE
+    total DOUBLE PRECISION := 0;
+BEGIN
+    -- Calcule le total pour la réservation concernée
+    SELECT
+        COALESCE(SUM(
+            v.prix_base
+            * ts.coefficient_prix
+            * ca.coefficient
+            * (1 - COALESCE(p.pourcentage_reduction, 0) / 100)
+        ), 0)
+    INTO total
+    FROM reservation_detail rd
+    JOIN reservation r ON rd.id_reservation = r.id
+    JOIN vol v ON r.id_vol = v.id
+    JOIN typesiege ts ON rd.id_type_siege = ts.id
+    LEFT JOIN reservation_personne rp ON rp.id_reservation = r.id
+    LEFT JOIN categorie_age ca ON rp.id_categorie_peronne = ca.id
+    LEFT JOIN promotion p ON p.id_vol = r.id_vol AND p.id_type_siege = rd.id_type_siege
+    WHERE rd.id_reservation = NEW.id_reservation;
+
+    -- Met à jour le prix_total dans la table reservation
+    UPDATE reservation
+    SET prix_total = total
+    WHERE id = NEW.id_reservation;
+
+    RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Création du trigger sur INSERT et UPDATE sur reservation_detail
+DROP TRIGGER IF EXISTS maj_prix_total_reservation_trigger ON reservation_detail;
+
+CREATE TRIGGER maj_prix_total_reservation_trigger
+AFTER INSERT OR UPDATE OR DELETE ON reservation_detail
+FOR EACH ROW
+EXECUTE FUNCTION maj_prix_total_reservation();
