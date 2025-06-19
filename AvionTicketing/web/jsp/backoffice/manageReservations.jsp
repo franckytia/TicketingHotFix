@@ -46,11 +46,19 @@
                         <td><%= res.getPrixTotal() %></td>
                         <td><%= res.getStatut() %></td>
                         <td>
+<<<<<<< Updated upstream
                             <form action="validate" method="post" style="display:inline;">
                                 <input type="hidden" name="id" value="<%= res.getId() %>">
                                 <button type="submit" class="btn btn-success btn-sm">Valider</button>
                             </form>
                             <form action="reject" method="post" style="display:inline;">
+=======
+                            <form action="validateReservation" method="post" style="display:inline;">
+                                <input type="hidden" name="id" value="<%= res.getId() %>">
+                                <button type="submit" class="btn btn-success btn-sm">Valider</button>
+                            </form>
+                            <form action="rejectReservation" method="post" style="display:inline;">
+>>>>>>> Stashed changes
                                 <input type="hidden" name="id" value="<%= res.getId() %>">
                                 <button type="submit" class="btn btn-danger btn-sm">Rejeter</button>
                             </form>

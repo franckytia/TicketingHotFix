@@ -126,6 +126,7 @@ public class ReservationController {
         }
         return view;
     }
+<<<<<<< Updated upstream
     @POST("/validate")
     public ModelView validateReservation(@Param(name = "id") String idStr) throws Exception {
         int id = Integer.parseInt(idStr);
@@ -158,5 +159,31 @@ public class ReservationController {
         reservationDao.updateStatut(id, "Annulé");
             view.addObject("message", "Réservation annulée avec succès. Numéro : " + reservation.getId());
         return  view;
+=======
+
+    @POST("/validateReservation")
+    public ModelView validateReservation(@Param(name = "id") String idStr) {
+        int id = Integer.parseInt(idStr);
+        reservationDao.updateStatut(id, "Confirmé");
+        return new ModelView("redirect:/reservations");
+    }
+
+    @POST("/rejectReservation")
+    public ModelView rejectReservation(@Param(name = "id") String idStr) {
+        int id = Integer.parseInt(idStr);
+        reservationDao.updateStatut(id, "Annulé");
+        return new ModelView("redirect:/reservations");
+    }
+    @GET("/manageReservations")
+    public ModelView manageReservations() {
+        ModelView view = new ModelView("web/jsp/backoffice/manageReservations.jsp");
+        try {
+            List<Reservation> reservations = reservationDao.getAllReservations();
+            view.addObject("reservations", reservations);
+        } catch (Exception e) {
+            view.addObject("error", "Erreur lors de la récupération des réservations : " + e.getMessage());
+        }
+        return view;
+>>>>>>> Stashed changes
     }
 }

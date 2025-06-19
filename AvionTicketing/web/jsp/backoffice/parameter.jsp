@@ -21,7 +21,11 @@
                     <a href="managePromotions" class="btn btn-link">Promotion par vol</a>
                 </li>
                 <li class="list-group-item">
+<<<<<<< Updated upstream
                     <a href="reservations" class="btn btn-link">Réservation</a>
+=======
+                    <a href="manageReservations" class="btn btn-link">Réservation</a>
+>>>>>>> Stashed changes
                 </li>
             </ul>
             <div class="mt-3 text-center">
