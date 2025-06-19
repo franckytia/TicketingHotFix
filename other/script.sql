@@ -89,6 +89,14 @@ CREATE TABLE reservation_detail (
 
 
 -----trigger
+-- xplications
+-- Ce trigger se déclenche après chaque INSERT, UPDATE ou DELETE sur reservation_detail.
+-- Il recalcule le total pour la réservation concernée en prenant en compte :
+-- le prix de base du vol,
+-- le coefficient du type de siège,
+-- le coefficient de la catégorie d’âge (si renseigné dans reservation_personne),
+-- la promotion éventuelle.
+-- Il met à jour le champ prix_total dans la table reservation.
 CREATE OR REPLACE FUNCTION maj_prix_total_reservation()
 RETURNS TRIGGER AS $$
 DECLARE
@@ -128,3 +136,57 @@ CREATE TRIGGER maj_prix_total_reservation_trigger
 AFTER INSERT OR UPDATE OR DELETE ON reservation_detail
 FOR EACH ROW
 EXECUTE FUNCTION maj_prix_total_reservation();
+
+
+
+-- Ce trigger :
+
+-- Vérifie la capacité de l’avion du vol lié à la réservation.
+-- Compte le nombre de passagers déjà enregistrés pour ce vol.
+-- Empêche l’insertion si la capacité est dépassée, avec un message d’erreur explicite.
+
+CREATE OR REPLACE FUNCTION check_surplus_passager()
+RETURNS TRIGGER AS $$
+DECLARE
+    capacite_avion INTEGER;
+    nb_passagers INTEGER;
+    vol_id INTEGER;
+BEGIN
+    -- Récupère l'id du vol lié à la réservation
+    SELECT id_vol INTO vol_id FROM reservation WHERE id = NEW.id_reservation;
+
+    -- Récupère la capacité de l'avion pour ce vol
+    SELECT a.capacite
+    INTO capacite_avion
+    FROM vol v
+    JOIN avion a ON v.id_avion = a.id
+    WHERE v.id = vol_id;
+
+    -- Compte le nombre de passagers déjà enregistrés pour ce vol
+    SELECT COUNT(rd.id)
+    INTO nb_passagers
+    FROM reservation_detail rd
+    JOIN reservation r ON rd.id_reservation = r.id
+    WHERE r.id_vol = vol_id;
+
+    -- Si on est en INSERT, on ajoute 1 (le nouveau passager)
+    IF (TG_OP = 'INSERT') THEN
+        nb_passagers := nb_passagers + 1;
+    END IF;
+
+    -- Si le nombre dépasse la capacité, on bloque l'insertion
+    IF nb_passagers > capacite_avion THEN
+        RAISE EXCEPTION 'Impossible d''ajouter le passager : capacité maximale de l''avion atteinte (%/%).', nb_passagers, capacite_avion;
+    END IF;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Création du trigger sur INSERT sur reservation_detail
+DROP TRIGGER IF EXISTS check_surplus_passager_trigger ON reservation_detail;
+
+CREATE TRIGGER check_surplus_passager_trigger
+BEFORE INSERT ON reservation_detail
+FOR EACH ROW
+EXECUTE FUNCTION check_surplus_passager();
