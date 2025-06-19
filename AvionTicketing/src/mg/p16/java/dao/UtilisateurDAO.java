@@ -43,4 +43,26 @@ public class UtilisateurDAO {
         ps.close();
         return Utilisateur;
     }
+
+    public Utilisateur authenticate(String email, String password) throws Exception {
+        Connection conn = Connexion.getConnection();
+        String sql = "SELECT * FROM utilisateur WHERE email = ? AND password = ?";
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setString(1, email);
+        ps.setString(2, password);
+        ResultSet rs = ps.executeQuery();
+        Utilisateur utilisateur = null;
+        if(rs.next()){
+            utilisateur = new Utilisateur();
+            utilisateur.setId(rs.getInt("id"));
+            utilisateur.setNom(rs.getString("nom"));
+            utilisateur.setPrenom(rs.getString("prenom"));
+            utilisateur.setEmail(rs.getString("email"));
+            utilisateur.setPassword(rs.getString("password"));
+            utilisateur.setRole(rs.getString("role"));
+        }
+        rs.close();
+        ps.close();
+        return utilisateur;
+    }
 }

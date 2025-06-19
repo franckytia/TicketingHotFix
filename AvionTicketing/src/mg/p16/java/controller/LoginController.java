@@ -24,20 +24,26 @@ public class LoginController {
             @Param(name = "username") String username,
             @Param(name = "password") String password) {
         ModelView view;
-        // Exemple de logique d'authentification pour tester
-        if ("admin@you".equals(username) && "adminpass".equals(password)) {
-            session.add("user", username);
-            session.add("role", "ADMIN");
-            view = new ModelView("web/jsp/backoffice/adminDashboard.jsp");
-            view.addObject("message", "Connexion réussie en tant qu'administrateur.");
-        } else if ("user@you".equals(username) && "userpass".equals(password)) {
-            session.add("user", username);
-            session.add("role", "USER");
-            view = new ModelView("web/jsp/frontoffice/home.jsp");
-            view.addObject("message", "Connexion réussie.");
-        } else {
+        try {
+            UtilisateurDAO dao = new UtilisateurDAO();
+            Utilisateur utilisateur = dao.authenticate(username, password);
+            if (utilisateur != null) {
+                session.add("user", utilisateur.getEmail());
+                session.add("role", utilisateur.getRole());
+                if ("admin".equalsIgnoreCase(utilisateur.getRole())) {
+                    view = new ModelView("web/jsp/backoffice/adminDashboard.jsp");
+                    view.addObject("message", "Connexion réussie en tant qu'administrateur.");
+                } else {
+                    view = new ModelView("web/jsp/frontoffice/home.jsp");
+                    view.addObject("message", "Connexion réussie.");
+                }
+            } else {
+                view = new ModelView("web/jsp/frontoffice/login.jsp");
+                view.addObject("error", "Nom d'utilisateur ou mot de passe incorrect.");
+            }
+        } catch (Exception e) {
             view = new ModelView("web/jsp/frontoffice/login.jsp");
-            view.addObject("error", "Nom d'utilisateur ou mot de passe incorrect.");
+            view.addObject("error", "Erreur lors de l'authentification : " + e.getMessage());
         }
         return view;
     }
@@ -63,7 +69,7 @@ public class LoginController {
         view.addObject("message", "Vous etes allez dans manageReservations.");
         List<Reservation> reservations = new ArrayList<>();
         ReservationDAO reservationDao = new ReservationDAO();
-        try{ 
+        try {
             reservations = reservationDao.getAllReservations();
         }catch(Exception e){
              view.addObject("error", "Erreur lors de la recuperation du reservation : " + e.getMessage());

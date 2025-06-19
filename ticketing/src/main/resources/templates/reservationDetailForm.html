@@ -21,46 +21,43 @@
         <input type="hidden" th:name="idReservation" th:value="${reservation.id}" />
 
         <!-- Pour chaque ligne de répartition -->
-        <div th:each="rp, rpStat : ${reservationPersonnes}">
-            <h3>
-                Catégorie <span th:text="${rp.idCategoriePersonne}"></span>
-                 – Nombre de personnes : <span th:text="${rp.total}"></span>
-            </h3>
-            
-            <!-- Boucle de 0 à (rp.total - 1) -->
-            <div th:each="i : ${#numbers.sequence(0, rp.total - 1)}"
-                 th:with="currentIndex=${rpStat.index * 100 + i}">
-                <fieldset style="margin-bottom:15px; padding:10px;">
-                    <legend>
-                        Passager <span th:text="${currentIndex + 1}"></span>
-                        (Catégorie: <span th:text="${rp.idCategoriePersonne}"></span>)
-                    </legend>
-                    
-                    <!-- Utilisation de th:name avec le pipe pour créer le nom dynamique -->
-                    <input type="hidden" th:name="|details[${currentIndex}].idReservation|" th:value="${reservation.id}" />
-                    <input type="hidden" th:name="|details[${currentIndex}].idCategorie|" th:value="${rp.idCategoriePersonne}" />
-                    
-                    <label>Nom du passager :</label>
-                    <input type="text" th:name="|details[${currentIndex}].nomPassager|" required /><br/><br/>
-                    
-                    <label>Taille (en m) :</label>
-                    <input type="number" step="0.01" th:name="|details[${currentIndex}].taille|" required /><br/><br/>
-                    
-                    <label>Passport :</label>
-                    <input type="text" th:name="|details[${currentIndex}].passport|" required /><br/><br/>
-                    
-                    <label>Type de siège :</label>
-                    <select th:name="|details[${currentIndex}].idTypeSiege|" required>
-                        <option th:each="ts : ${typesSiege}" 
-                                th:value="${ts.id}" 
-                                th:text="${ts.nom}"></option>
-                    </select><br/><br/>
-                    
-                    <label>Remarque :</label>
-                    <textarea th:name="|details[${currentIndex}].remarque|" rows="2" cols="30"></textarea>
-                </fieldset>
+        <th:block th:with="counter=0">
+            <div th:each="rp, rpStat : ${reservationPersonnes}">
+                <div th:each="i, iterStat : ${#numbers.sequence(0, rp.total - 1)}"
+                     th:with="currentIndex=${counter + rpStat.index + i}">
+                    <fieldset style="margin-bottom:15px; padding:10px;">
+                        <legend>
+                            Passager <span th:text="${currentIndex + 1}"></span>
+                            (Catégorie: <span th:text="${rp.idCategoriePersonne}"></span>)
+                        </legend>
+                        <!-- Utilisation de th:name avec le pipe pour créer le nom dynamique -->
+                        <input type="hidden" th:name="|details[${currentIndex}].idReservation|" th:value="${reservation.id}" />
+                        <input type="hidden" th:name="|details[${currentIndex}].idCategorie|" th:value="${rp.idCategoriePersonne}" />
+                        
+                        <label>Nom du passager :</label>
+                        <input type="text" th:name="|details[${currentIndex}].nomPassager|" required /><br/><br/>
+                        
+                        <label>Taille (en m) :</label>
+                        <input type="number" step="0.01" th:name="|details[${currentIndex}].taille|" required /><br/><br/>
+                        
+                        <label>Passport :</label>
+                        <input type="text" th:name="|details[${currentIndex}].passport|" required /><br/><br/>
+                        
+                        <label>Type de siège :</label>
+                        <select th:name="|details[${currentIndex}].idTypeSiege|" required>
+                            <option th:each="ts : ${typesSiege}" 
+                                    th:value="${ts.id}" 
+                                    th:text="${ts.nom}"></option>
+                        </select><br/><br/>
+                        
+                        <label>Remarque :</label>
+                        <textarea th:name="|details[${currentIndex}].remarque|" rows="2" cols="30"></textarea>
+                    </fieldset>
+                </div>
+                <th:block th:with="counter=${counter + rp.total}"></th:block>
             </div>
-        </div>
+        </th:block>
+
         <button type="submit">Enregistrer les détails</button>
     </form>
     

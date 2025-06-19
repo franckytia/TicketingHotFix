@@ -85,4 +85,33 @@ public class ReservationDAO {
         ps.close();
         conn.close();
     }
+
+    public void updateStatut(int id, String statut) {
+        try {
+            Connection conn = Connexion.getConnection();
+            String sql = "UPDATE Reservation SET statut = ? WHERE id = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, statut);
+            ps.setInt(2, id);
+            ps.executeUpdate();
+            ps.close();
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public void updatePrice(int id, String statut) {
+        try {
+            Connection conn = Connexion.getConnection();
+            String sql = "UPDATE Reservation SET statut = ? WHERE id = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, statut);
+            ps.setInt(2, id);
+            ps.executeUpdate();
+            ps.close();
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
