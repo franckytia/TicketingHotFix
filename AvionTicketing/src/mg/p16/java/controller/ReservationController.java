@@ -126,29 +126,37 @@ public class ReservationController {
         }
         return view;
     }
-
-    @POST("/validateReservation")
-    public ModelView validateReservation(@Param(name = "id") String idStr) {
+    @POST("/validate")
+    public ModelView validateReservation(@Param(name = "id") String idStr) throws Exception {
         int id = Integer.parseInt(idStr);
-        reservationDao.updateStatut(id, "Confirmé");
-        return new ModelView("redirect:/reservations");
-    }
-
-    @POST("/rejectReservation")
-    public ModelView rejectReservation(@Param(name = "id") String idStr) {
-        int id = Integer.parseInt(idStr);
-        reservationDao.updateStatut(id, "Annulé");
-        return new ModelView("redirect:/reservations");
-    }
-    @GET("/manageReservations")
-    public ModelView manageReservations() {
-        ModelView view = new ModelView("web/jsp/backoffice/manageReservations.jsp");
-        try {
-            List<Reservation> reservations = reservationDao.getAllReservations();
-            view.addObject("reservations", reservations);
-        } catch (Exception e) {
-            view.addObject("error", "Erreur lors de la récupération des réservations : " + e.getMessage());
+        ModelView view = new ModelView("web/jsp/backoffice/reservationConfirmation.jsp");
+        Reservation reservation = reservationDao.getReservationById(id);
+        if (reservation == null) {
+            view.addObject("error", "Réservation non trouvée pour l'ID : " + id);
+            return view;
         }
+        reservationDao.updateStatut(id, "Confirmé");
+        view.addObject("message", "Réservation confirmée avec succès. Numéro : " + id);
         return view;
+    }
+
+    @POST("/reject")
+    public ModelView rejectReservation(@Param(name = "id") String idStr)throws Exception {
+        ModelView view = new ModelView("web/jsp/backoffice/reservationConfirmation.jsp");
+        int id = Integer.parseInt(idStr);
+        Reservation reservation = reservationDao.getReservationById(id);
+        if (reservation == null) {
+            view.addObject("error", "Réservation non trouvée pour l'ID : " + id);
+            return view;
+        }
+        Vol vol = volDao.getVolById(reservation.getIdVol());
+        Date now = new Date();
+        if (vol.getDateDepart().getTime() - now.getTime() < 24 * 60 * 60 * 1000) {
+                view.addObject("error", "L'annulation n'est pas possible moins de 24 heures avant le départ.");
+                return view;
+            }
+        reservationDao.updateStatut(id, "Annulé");
+            view.addObject("message", "Réservation annulée avec succès. Numéro : " + reservation.getId());
+        return  view;
     }
 }

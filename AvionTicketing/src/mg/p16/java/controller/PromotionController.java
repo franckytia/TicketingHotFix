@@ -20,15 +20,6 @@ public class PromotionController {
      @GET("/managePromotions")
     public ModelView managePromotions() {
         ModelView view = new ModelView("/web/jsp/backoffice/managePromotions.jsp");
-        // try {
-        // List<Promotion> listpromo = promotionDao.findAll();
-        //     view.addObject("listpromo",listpromo);
-        // } catch (Exception e) {
-        //      System.out.println("Erreur lors de l'ajout de la promotion : " + e.getMessage());
-        //     e.printStackTrace(); // Affiche la pile d'erreurs complète dans la console
-        //     view = new ModelView("/web/jsp/backoffice/managePromotions.jsp");
-        //     view.addObject("error", "Erreur lors de la mise en page de la promotion : " + e.getMessage());
-        // }
         return view;
     }
      @GET("/goListPromotions")

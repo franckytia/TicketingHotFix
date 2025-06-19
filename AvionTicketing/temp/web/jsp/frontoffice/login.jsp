@@ -89,6 +89,17 @@
                       </div>
                     </div>
                   </form>
+                  <%-- Affichage des messages de succès ou d'erreur --%>
+                  <c:if test="${not empty message}">
+                      <div class="alert alert-success" role="alert">
+                          ${message}
+                      </div>
+                  </c:if>
+                  <c:if test="${not empty error}">
+                      <div class="alert alert-danger" role="alert">
+                          ${error}
+                      </div>
+                  </c:if>
                 </div>
               </div>
             </div>
